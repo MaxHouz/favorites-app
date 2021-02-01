@@ -1,0 +1,59 @@
+<table mat-table matSort
+       (matSortChange)="onSortChange($event)"
+       [ngClass]="{ 'table--loading': isLoading }"
+       [dataSource]="sortedData || data" class="table">
+  <ng-container [matColumnDef]="column.key" *ngFor="let column of columns">
+
+    <ng-container *ngIf="column.key !== 'name'; else sortingHeader">
+      <th mat-header-cell *matHeaderCellDef> {{ column.header | uppercase }} </th>
+    </ng-container>
+    <ng-template #sortingHeader>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ column.header | uppercase }} </th>
+    </ng-template>
+
+    <td mat-cell [ngClass]="{
+        'table__favorite-cell': column.key === 'favorite',
+        'table__comment-cell': column.key === 'comment'
+      }" *matCellDef="let character">
+      <div *ngIf="column.key !== 'favorite' && column.key !== 'comment'">
+        {{ character[column.key] || '-' }}
+      </div>
+
+      <div *ngIf="column.key === 'favorite'">
+        <button mat-icon-button color="primary" (click)="updateFavoritesValue(character)">
+          <mat-icon>{{ character[column.key] ? 'favorite' : 'favorite_border' }}</mat-icon>
+        </button>
+      </div>
+
+      <div *ngIf="column.key === 'comment'">
+        <mat-form-field>
+          <mat-label>Comment</mat-label>
+          <textarea
+            mat-autosize matInput
+            (ngModelChange)='commentChange.next({ comment: $event, character: character })'
+            [ngModel]="character[column.key]">
+          </textarea>
+          <button mat-button *ngIf="character[column.key]"
+                  (click)="removeComment(character)"
+                  matSuffix mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnKeys"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnKeys;"></tr>
+</table>
+
+<div class="load-more" *ngIf="!loadMoreHidden && !isLoading">
+  <button mat-button (click)="loadMore.emit()">
+    <mat-icon>cached</mat-icon>
+    Load More
+  </button>
+</div>
+
+<div class="loader" *ngIf="isLoading">
+  <mat-spinner></mat-spinner>
+</div>

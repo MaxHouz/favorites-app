@@ -1,0 +1,23 @@
+<mat-tab-group mat-align-tabs="start">
+  <mat-tab label="Star Wars">
+    <app-character-table
+      class="table"
+      [isLoading]="isStarWarsLoading$ | async"
+      [loadMoreHidden]="isLastStarWarsPage$ | async"
+      (loadMore)="onLoadStarWars()"
+      [data]="starWarsCharacters$ | async"
+      [columns]="starWarsColumns">
+    </app-character-table>
+  </mat-tab>
+
+  <mat-tab label="Lord Of The Rings">
+    <app-character-table
+      class="table"
+      [isLoading]="isLordOfTheRingsLoading$ | async"
+      [loadMoreHidden]="isLastLordOfTheRingsPage$ | async"
+      (loadMore)="onLoadLordOfTheRings()"
+      [data]="lordOfTheRingsCharacters$ | async"
+      [columns]="lordOfTheRingsColumns">
+    </app-character-table>
+  </mat-tab>
+</mat-tab-group>

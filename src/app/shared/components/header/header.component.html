@@ -1,0 +1,19 @@
+<mat-toolbar color="primary" class="header">
+  <h1>Favorites app</h1>
+
+  <div>
+    <button mat-button [color]="!(isFavoritesActive$ | async) ? 'accent' : null" (click)="openProviders()">
+      <mat-icon>
+        movie
+      </mat-icon>
+      Movies
+    </button>
+
+    <button mat-button [color]="(isFavoritesActive$ | async) ? 'accent' : null" (click)="openFavorites()">
+      <mat-icon>
+        favorite
+      </mat-icon>
+      Favorite characters
+    </button>
+  </div>
+</mat-toolbar>
