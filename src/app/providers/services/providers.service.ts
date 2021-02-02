@@ -5,6 +5,7 @@ import { ILordOfTheRingsCharacter, IStarWarsCharacter, Movie } from '../../share
 import { IStarWarsResponse } from '../models/star-wars.interface';
 import { map } from 'rxjs/operators';
 import { ILordOfTheRingsResponse } from '../models/lord-of-the-rings.interface';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class ProvidersService {
   public getLordOfTheRings(page = 1): Observable<ILordOfTheRingsCharacter[]> {
     return this.http.get<ILordOfTheRingsResponse>(`https://the-one-api.dev/v2/character`, {
       headers: {
-        Authorization: `Bearer AXBGjjKafsrL8fjcHNXu`
+        Authorization: `Bearer ${environment.lotrToken}`
       },
       params: {
         page: page.toString(),
